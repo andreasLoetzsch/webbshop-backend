@@ -29,7 +29,9 @@ const createUser = async (req, res) => {
         .status(401)
         .json({ success: false, message: "Email is not valid" });
     }
-    const emailAlreadyInUse = await User.findOne({ email });
+    const emailAlreadyInUse = await User.findOne({
+      email: { $regex: "^" + email + "$", $options: "i" },
+    });
 
     if (emailAlreadyInUse) {
       res
@@ -37,7 +39,9 @@ const createUser = async (req, res) => {
         .json({ success: false, message: "Email is already taken" });
     }
 
-    const usernameAlreadyInUse = await User.findOne({ username });
+    const usernameAlreadyInUse = await User.findOne({
+      username: { $regex: "^" + username + "$", $options: "i" },
+    });
 
     if (usernameAlreadyInUse) {
       return res
@@ -66,7 +70,9 @@ const loginUser = async (req, res) => {
         .status(401)
         .json({ success: false, message: "Username and password required" });
     }
-    const user = await User.findOne({ username });
+    const user = await User.findOne({
+      username: { $regex: "^" + username + "$", $options: "i" },
+    });
     const passwordCheck = await user.checkPassword(password);
     if (!user || !passwordCheck) {
       return res.status(401).json({
