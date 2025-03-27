@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const userRouter = require("./routes/userRoute");
+const productRouter = require("./routes/producteRoute");
 const cors = require("cors");
 
 app.use(express.json());
@@ -15,5 +16,6 @@ app.use(
 );
 
 app.use("/user", userRouter);
+app.use("/product", productRouter);
 
 module.exports = app;
